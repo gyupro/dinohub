@@ -248,6 +248,21 @@ npx vercel --prod
 - **이슈 리포트**: [GitHub Issues](https://github.com/yourusername/dinosaur-discovery/issues)
 - **기능 요청**: [GitHub Discussions](https://github.com/yourusername/dinosaur-discovery/discussions)
 
+## 🔍 SEO 최적화
+
+이 프로젝트는 검색엔진 최적화를 위해 다음을 포함합니다:
+
+- 페이지별 title, description, keywords, canonical, robots 메타 태그
+- Open Graph, Twitter Card 메타 태그
+- JSON-LD 구조화 데이터 (Organization, Website)
+- favicon.ico, apple-touch-icon.png, og-image.jpg 등 대표 이미지
+- robots.txt, sitemap.xml (public 폴더에 위치, 필요시 생성)
+- 접근성(alt 태그, 명확한 버튼/링크 텍스트 등)
+- 다국어 지원 및 <html lang="ko"> 설정
+- 반응형 디자인
+
+SEO 관련 추가 설정은 필요에 따라 public 폴더에 파일을 추가하거나, Next.js의 generateMetadata/generateSitemap 기능을 활용할 수 있습니다.
+
 ---
 
 **🦕 공룡의 세계로 떠나는 여행을 시작하세요! 🦖** 

@@ -1,4 +1,5 @@
 import { Character } from '@/data/characters'
+import Image from 'next/image'
 
 interface BlogPostProps {
   character: Character
@@ -9,10 +10,13 @@ export default function BlogPost({ character, onClick }: BlogPostProps) {
   return (
     <article className="bg-white rounded-xl border border-gray-200 overflow-hidden group cursor-pointer hover:border-orange-300 transition-colors duration-200">
       <div className="relative overflow-hidden">
-        <img 
+        <Image 
           src={character.image} 
           alt={character.name} 
           className="w-full h-64 object-cover"
+          width={800}
+          height={256}
+          priority={true}
         />
         
         {/* Category badge */}

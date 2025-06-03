@@ -10,8 +10,9 @@
     "back": "뒤로가기",
     "next": "다음",
     "previous": "이전",
-    "description": "다양한 시대의 공룡들을 탐험하고 발견하세요. 과학적 분류 체계와 상세한 공룡 정보를 제공합니다.",
-    "title": "공룡 발견의 여정",
+    "description": "공룡에 대한 모든 것을 탐험하고 발견하세요. 최신 정보와 다양한 공룡 데이터를 제공합니다.",
+    "title": "dinohub - 공룡의 모든 것, dinohub",
+    "subtitle": "dinohub",
     "viewMore": "자세히 보기",
     "clearAll": "전체 초기화"
   },
@@ -62,7 +63,7 @@
     "popularDinosaurs": "인기 공룡",
     "categories": "분류 체계",
     "scientificInfo": "과학 정보",
-    "database": "공룡 데이터베이스"
+    "database": "dinohub 데이터베이스"
   },
   "nav": {
     "home": "홈으로",
@@ -74,7 +75,7 @@
   "home": {
     "title": "공룡 발견의 여정",
     "subtitle": "DINOSAUR DISCOVERY",
-    "heroTitle": "공룡 발견의 여정",
+    "heroTitle": "dinohub - 공룡의 모든 것, dinohub",
     "description": "다양한 시대의 공룡들을 탐험하고 발견하세요",
     "exploreButton": "공룡 탐험하기",
     "generateButton": "AI 캐릭터 생성",
@@ -91,7 +92,7 @@
     "memes": "공룡 사실"
   },
   "bestiary": {
-    "title": "DINOSAUR DISCOVERY",
+    "title": "dinohub 백과사전",
     "collected": "발견",
     "characters": "공룡",
     "completion": "도감 완성도",
@@ -185,7 +186,7 @@
     "mythic": "신화"
   },
   "footer": {
-    "copyright": "© 2024 Dinosaur Discovery. 모든 공룡 발견 권리 보유.",
+    "copyright": "© 2024 dinohub. 모든 공룡 정보의 권리는 dinohub에 있습니다.",
     "privacy": "개인정보처리방침",
     "terms": "이용약관",
     "contact": "문의하기"

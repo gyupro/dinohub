@@ -1,5 +1,6 @@
 import { Character } from '@/data/characters'
 import { useEffect } from 'react'
+import Image from 'next/image'
 
 interface BlogPostModalProps {
   character: Character | null
@@ -20,10 +21,13 @@ export default function BlogPostModal({ character, onClose }: BlogPostModalProps
       <div className="w-full max-w-sm sm:max-w-2xl bg-white rounded-lg sm:rounded-xl overflow-hidden shadow-lg" onClick={e => e.stopPropagation()}>
         {/* Header */}
         <div className="relative">
-          <img 
+          <Image 
             src={character.image} 
             alt={character.name} 
             className="w-full h-40 sm:h-80 object-cover"
+            width={800}
+            height={320}
+            priority={true}
           />
           <div className="absolute inset-0 bg-black/40"></div>
           <button 
@@ -78,7 +82,7 @@ export default function BlogPostModal({ character, onClose }: BlogPostModalProps
                 <div className="mt-2 sm:mt-3">
                   <span className="font-medium text-gray-700">대표 대사:</span>
                   <blockquote className="ml-2 italic text-gray-600 border-l-4 border-orange-600 pl-3 sm:pl-4 mt-1 sm:mt-2">
-                    "{character.catchphrase}"
+                    &quot;{character.catchphrase}&quot;
                   </blockquote>
                 </div>
               </div>
@@ -120,7 +124,7 @@ export default function BlogPostModal({ character, onClose }: BlogPostModalProps
                   <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6">
                     {character.memeQuotes.map((quote, i) => (
                       <blockquote key={i} className="bg-orange-50 border-l-4 border-orange-600 p-3 sm:p-4 italic text-gray-700 text-xs sm:text-base">
-                        "{quote}"
+                        &quot;{quote}&quot;
                       </blockquote>
                     ))}
                   </div>

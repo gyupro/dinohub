@@ -1,4 +1,5 @@
 import { Dinosaur } from '@/data/dinosaurs'
+import Image from 'next/image'
 
 interface PopularPostsProps {
   dinosaurs: Dinosaur[]
@@ -21,7 +22,7 @@ export default function PopularPosts({ dinosaurs, onSelect }: PopularPostsProps)
             onClick={() => onSelect(dino)}
           >
             {dino.image?.source ? (
-              <img src={dino.image.source} alt={dino.name} className="w-10 h-10 rounded-full object-cover bg-gray-100" />
+              <Image src={dino.image.source} alt={dino.name} className="w-10 h-10 rounded-full object-cover bg-gray-100" width={40} height={40} />
             ) : (
               <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-2xl">🦕</div>
             )}

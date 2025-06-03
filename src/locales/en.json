@@ -10,8 +10,8 @@
     "back": "Back",
     "next": "Next",
     "previous": "Previous",
-    "description": "Explore and discover dinosaurs from various eras. Providing scientific classification systems and detailed dinosaur information.",
-    "title": "Dinosaur Discovery Journey",
+    "description": "Explore everything about dinosaurs with dinohub. Get the latest information and rich dinosaur data.",
+    "title": "dinohub - All About Dinosaurs, dinohub",
     "viewMore": "View Details",
     "clearAll": "Clear All"
   },
@@ -62,7 +62,7 @@
     "popularDinosaurs": "Popular Dinosaurs",
     "categories": "Classification System",
     "scientificInfo": "Scientific Info",
-    "database": "Dinosaur Database"
+    "database": "dinohub Database"
   },
   "nav": {
     "home": "Home",
@@ -98,7 +98,7 @@
     "searchDescription": "Search through approximately 1,200 dinosaur species data"
   },
   "bestiary": {
-    "title": "Dinosaur Encyclopedia",
+    "title": "dinohub Encyclopedia",
     "collected": "Collected",
     "characters": "Dinosaurs",
     "completion": "Completion",
@@ -200,7 +200,7 @@
     "mythic": "Mythic"
   },
   "footer": {
-    "copyright": "© 2024 Dinosaur Discovery. All dinosaur discovery rights reserved.",
+    "copyright": "© 2024 dinohub. All dinosaur discovery rights reserved.",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
     "contact": "Contact Us"

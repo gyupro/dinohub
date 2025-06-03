@@ -1,5 +1,6 @@
 import { Dinosaur } from '@/data/dinosaurs'
 import { useTranslation } from 'react-i18next'
+import Image from 'next/image'
 
 interface DinosaurPostProps {
   dinosaur: Dinosaur
@@ -50,14 +51,17 @@ export default function DinosaurPost({ dinosaur, onClick }: DinosaurPostProps) {
     >
       <div className="relative overflow-hidden h-40 sm:h-56">
         {dinosaur.image?.source ? (
-          <img 
+          <Image 
             src={dinosaur.image.source} 
             alt={dinosaur.name} 
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            width={400}
+            height={224}
             onError={(e) => {
               const target = e.target as HTMLImageElement;
               target.src = `https://via.placeholder.com/400x300/f59e0b/ffffff?text=${encodeURIComponent(dinosaur.name)}`;
             }}
+            priority={true}
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-orange-100 via-orange-50 to-yellow-50 flex items-center justify-center">

@@ -5,42 +5,43 @@ import Link from 'next/link'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 import { Suspense } from 'react'
 import I18nProvider from '@/components/I18nProvider'
+import { Analytics } from '@vercel/analytics/next'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: {
-    default: 'Dinosaur Discovery - 공룡 발견의 여정',
-    template: '%s | Dinosaur Discovery'
+    default: 'dinohub - 공룡의 모든 것, dinohub',
+    template: '%s | dinohub'
   },
-  description: '다양한 시대의 공룡들을 탐험하고 발견하세요. 과학적 분류 체계와 상세한 공룡 정보를 제공합니다.',
-  keywords: ['공룡', '화석', '선사시대', '고생물학', '분류학', 'dinosaur', 'fossil', 'prehistoric'],
-  authors: [{ name: 'Dinosaur Discovery Team' }],
+  description: '공룡에 대한 모든 것을 탐험하고 발견하세요. 최신 정보와 다양한 공룡 데이터를 제공합니다.',
+  keywords: ['공룡', 'dinohub', '화석', '선사시대', '고생물학', '분류학', 'dinosaur', 'fossil', 'prehistoric'],
+  authors: [{ name: 'dinohub Team' }],
   robots: 'index, follow',
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
-    url: 'https://dinosaur-discovery.vercel.app',
-    title: 'Dinosaur Discovery - 공룡 발견의 여정',
-    description: '다양한 시대의 공룡들을 탐험하고 발견하세요. 과학적 분류 체계와 상세한 공룡 정보를 제공합니다.',
-    siteName: 'Dinosaur Discovery',
+    url: 'https://dinohub.vercel.app',
+    title: 'dinohub - 공룡의 모든 것, dinohub',
+    description: '공룡에 대한 모든 것을 탐험하고 발견하세요. 최신 정보와 다양한 공룡 데이터를 제공합니다.',
+    siteName: 'dinohub',
     images: [
       {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Dinosaur Discovery - 공룡 발견의 여정'
+        alt: 'dinohub - 공룡의 모든 것, dinohub'
       }
     ]
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Dinosaur Discovery - 공룡 발견의 여정',
-    description: '다양한 시대의 공룡들을 탐험하고 발견하세요. 과학적 분류 체계와 상세한 공룡 정보를 제공합니다.',
+    title: 'dinohub - 공룡의 모든 것, dinohub',
+    description: '공룡에 대한 모든 것을 탐험하고 발견하세요. 최신 정보와 다양한 공룡 데이터를 제공합니다.',
     images: ['/og-image.jpg']
   },
   alternates: {
-    canonical: 'https://dinosaur-discovery.vercel.app'
+    canonical: 'https://dinohub.vercel.app'
   },
   category: 'education'
 }
@@ -57,6 +58,28 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta name="theme-color" content="#ea580c" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {/* JSON-LD Structured Data for SEO */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'Organization',
+          name: 'dinohub',
+          url: 'https://dinohub.vercel.app',
+          logo: '/og-image.jpg',
+          sameAs: [
+            'https://dinohub.vercel.app'
+          ]
+        }) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          name: 'dinohub',
+          url: 'https://dinohub.vercel.app',
+          potentialAction: {
+            '@type': 'SearchAction',
+            target: 'https://dinohub.vercel.app/?search={search_term_string}',
+            'query-input': 'required name=search_term_string'
+          }
+        }) }} />
       </head>
       <body className={inter.className}>
         <I18nProvider>
@@ -89,6 +112,7 @@ export default function RootLayout({
             ))}
           </div>
         </I18nProvider>
+        <Analytics />
       </body>
     </html>
   )
