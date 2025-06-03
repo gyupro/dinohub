@@ -96,75 +96,24 @@ export default function DinosaurBlogHomePage() {
           </div>
           
           {/* Search & Filter Card */}
-          <div className="bg-white/90 rounded-2xl shadow-lg p-4 mt-4 mb-6 max-w-md mx-auto flex flex-col gap-2">
-            <form onSubmit={handleSearchSubmit} className="flex flex-col gap-2 w-full">
-              <input
-                type="text"
-                name="search"
-                value={searchInput}
-                onChange={e => setSearchInput(e.target.value)}
-                placeholder={t('search.placeholder')}
-                className="w-full px-3 py-2 text-gray-900 bg-white rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm shadow-sm"
-                disabled={isLoading}
-              />
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full px-4 py-2 bg-orange-500 text-white font-semibold rounded-lg shadow hover:bg-orange-600 transition-colors duration-200 disabled:opacity-50 text-base"
-              >
-                {t('common.search')}
-              </button>
-              <div className="flex flex-col gap-2 mt-1">
-                <select
-                  value={diet}
-                  onChange={handleDietChange}
-                  className="w-full px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-sm"
-                >
-                  <option value="">{t('dinosaur.diet')}</option>
-                  <option value="herbivore">{t('dinosaur.herbivore')}</option>
-                  <option value="carnivore">{t('dinosaur.carnivore')}</option>
-                  <option value="omnivore">{t('dinosaur.omnivore')}</option>
-                  <option value="piscivore">{t('dinosaur.piscivore')}</option>
-                </select>
-                <select
-                  value={locomotionType}
-                  onChange={handleLocomotionChange}
-                  className="w-full px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-sm"
-                >
-                  <option value="">{t('dinosaur.locomotion')}</option>
-                  <option value="swimming">{t('dinosaur.swimming') || 'swimming'}</option>
-                  <option value="quadruped">{t('dinosaur.quadruped') || 'quadruped'}</option>
-                  <option value="gliding">{t('dinosaur.gliding') || 'gliding'}</option>
-                  <option value="biped">{t('dinosaur.biped') || 'biped'}</option>
-                </select>
-                <select
-                  value={localTemporalRange}
-                  onChange={handleTemporalRangeChange}
-                  className="w-full px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-sm"
-                >
-                  <option value="">{t('dinosaur.temporalRange')}</option>
-                  <option value="Triassic">{t('filter.temporalRange.Triassic')}</option>
-                  <option value="Jurassic">{t('filter.temporalRange.Jurassic')}</option>
-                  <option value="Cretaceous">{t('filter.temporalRange.Cretaceous')}</option>
-                </select>
-              </div>
-            </form>
-            <button
-              type="button"
-              onClick={() => {
-                setSearch('');
-                setSearchInput('');
-                setDiet('');
-                setLocomotionType('');
-                setTemporalRange('');
-                setLocalTemporalRange('');
+          <div className="max-w-3xl mx-auto mt-6 mb-10">
+            <DinosaurSearch
+              onSearch={async (query, filters) => {
+                setSearch(query);
+                setDiet(filters?.diet || '');
+                setLocomotionType(filters?.locomotionType || '');
                 setPage(1);
               }}
-              className="self-end mt-1 px-3 py-1 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors text-xs font-medium shadow"
-              style={{ minWidth: 80 }}
-            >
-              {t('common.clearAll')}
-            </button>
+              onSearchStateChange={(searching) => {
+                if (!searching) {
+                  setSearch('');
+                  setDiet('');
+                  setLocomotionType('');
+                  setPage(1);
+                }
+              }}
+              isLoading={isLoading}
+            />
           </div>
         </div>
       </section>
@@ -262,7 +211,8 @@ export default function DinosaurBlogHomePage() {
             id: selectedDinosaur.id.toString(),
             name: selectedDinosaur.name,
             nameKorean: selectedDinosaur.classification?.genus || selectedDinosaur.name,
-            nameItalian: selectedDinosaur.classification?.species || selectedDinosaur.name,
+            scientificName: selectedDinosaur.name,
+            temporalRange: selectedDinosaur.temporalRange,
             description: selectedDinosaur.description,
             detailedDescription: [
               selectedDinosaur.existed && `🕰️ ${t('modal.existed')}: ${selectedDinosaur.existed}`,
@@ -278,8 +228,8 @@ export default function DinosaurBlogHomePage() {
             emoji: selectedDinosaur.diet.toLowerCase().includes('carnivore') ? '🥩' :
               selectedDinosaur.diet.toLowerCase().includes('herbivore') ? '🌿' :
               selectedDinosaur.diet.toLowerCase().includes('piscivore') ? '🐟' : '🦴',
-            origin: selectedDinosaur.source?.title || selectedDinosaur.image?.attribution || t('navigation.database'),
-            catchphrase: `${selectedDinosaur.temporalRange} ${t('dinosaur.period')}${t('dinosaur.diet')}`,
+            origin: selectedDinosaur.source?.title || selectedDinosaur.image?.attribution || '',
+            catchphrase: '',
             category: [selectedDinosaur.diet, selectedDinosaur.locomotionType].filter(Boolean),
             tags: [
               selectedDinosaur.diet,

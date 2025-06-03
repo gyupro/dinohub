@@ -222,7 +222,17 @@
     "family": "Family",
     "genus": "Genus",
     "species": "Species",
-    "class": "Class"
+    "class": "Class",
+    "basicInfo": "Basic Info",
+    "origin": "Origin",
+    "scientificName": "Scientific Name",
+    "introduction": "Introduction",
+    "details": "Details",
+    "appearance": "Appearance",
+    "personality": "Personality",
+    "memeQuotes": "Famous Quotes",
+    "trivia": "Trivia",
+    "tags": "Tags"
   },
   "filter": {
     "temporalRange": {

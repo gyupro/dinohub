@@ -1,6 +1,7 @@
 import { Character } from '@/data/characters'
 import { useEffect } from 'react'
 import Image from 'next/image'
+import { useTranslation } from 'react-i18next'
 
 interface BlogPostModalProps {
   character: Character | null
@@ -8,6 +9,8 @@ interface BlogPostModalProps {
 }
 
 export default function BlogPostModal({ character, onClose }: BlogPostModalProps) {
+  const { t } = useTranslation();
+
   // Prevent background scroll when modal is open
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -18,7 +21,7 @@ export default function BlogPostModal({ character, onClose }: BlogPostModalProps
 
   return (
     <div className="fixed inset-0 z-[999] bg-black/50 flex items-center justify-center px-1 py-4" onClick={onClose}>
-      <div className="w-full max-w-sm sm:max-w-2xl bg-white rounded-lg sm:rounded-xl overflow-hidden shadow-lg" onClick={e => e.stopPropagation()}>
+      <div className="w-full max-w-sm sm:max-w-lg bg-white rounded-lg sm:rounded-xl overflow-hidden shadow-lg" onClick={e => e.stopPropagation()}>
         {/* Header */}
         <div className="relative">
           <Image 
@@ -51,7 +54,7 @@ export default function BlogPostModal({ character, onClose }: BlogPostModalProps
           </div>
         </div>
         {/* Content */}
-        <div className="max-h-[70vh] overflow-y-auto">
+        <div className="max-h-[60vh] md:max-h-[50vh] overflow-y-auto">
           <div className="p-3 sm:p-8 space-y-4 sm:space-y-6 text-sm sm:text-base">
             {/* Meta info */}
             <div className="flex flex-col sm:flex-row items-center justify-between gap-2 pb-3 sm:pb-4 border-b border-gray-200">
@@ -68,31 +71,25 @@ export default function BlogPostModal({ character, onClose }: BlogPostModalProps
             {/* Main content */}
             <div className="prose prose-sm sm:prose-lg max-w-none">
               <div className="bg-gray-50 p-3 sm:p-5 rounded-lg mb-4 sm:mb-6">
-                <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 sm:mb-3">기본 정보</h3>
+                <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 sm:mb-3">{t('modal.basicInfo')}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-4 text-xs sm:text-sm">
                   <div>
-                    <span className="font-medium text-gray-700">출처:</span>
-                    <span className="ml-2 text-gray-600">{character.origin}</span>
-                  </div>
-                  <div>
-                    <span className="font-medium text-gray-700">이탈리아명:</span>
-                    <span className="ml-2 text-gray-600">{character.nameItalian}</span>
+                    <span className="font-medium text-gray-700">{t('modal.scientificName')}:</span>
+                    <span className="ml-2 text-gray-600">{character.scientificName}</span>
                   </div>
                 </div>
                 <div className="mt-2 sm:mt-3">
-                  <span className="font-medium text-gray-700">대표 대사:</span>
-                  <blockquote className="ml-2 italic text-gray-600 border-l-4 border-orange-600 pl-3 sm:pl-4 mt-1 sm:mt-2">
-                    &quot;{character.catchphrase}&quot;
-                  </blockquote>
+                  <span className="font-medium text-gray-700">{t('modal.temporalRange')}:</span>
+                  <span className="ml-2 text-gray-600">{character.temporalRange || '-'}</span>
                 </div>
               </div>
-              <h3 className="text-base sm:text-xl font-bold text-gray-900 mb-2 sm:mb-4">소개</h3>
+              <h3 className="text-base sm:text-xl font-bold text-gray-900 mb-2 sm:mb-4">{t('modal.introduction')}</h3>
               <p className="text-gray-700 leading-relaxed mb-4 sm:mb-6">
                 {character.description}
               </p>
               {character.detailedDescription && (
                 <>
-                  <h3 className="text-base sm:text-xl font-bold text-gray-900 mb-2 sm:mb-4">상세 내용</h3>
+                  <h3 className="text-base sm:text-xl font-bold text-gray-900 mb-2 sm:mb-4">{t('modal.details')}</h3>
                   <div className="text-gray-700 leading-relaxed whitespace-pre-line mb-4 sm:mb-6">
                     {character.detailedDescription}
                   </div>
@@ -100,7 +97,7 @@ export default function BlogPostModal({ character, onClose }: BlogPostModalProps
               )}
               {character.appearance && (
                 <>
-                  <h3 className="text-base sm:text-xl font-bold text-gray-900 mb-2 sm:mb-4">외형 특징</h3>
+                  <h3 className="text-base sm:text-xl font-bold text-gray-900 mb-2 sm:mb-4">{t('modal.appearance')}</h3>
                   <p className="text-gray-700 leading-relaxed mb-4 sm:mb-6">
                     {character.appearance}
                   </p>
@@ -108,7 +105,7 @@ export default function BlogPostModal({ character, onClose }: BlogPostModalProps
               )}
               {character.personality && character.personality.length > 0 && (
                 <>
-                  <h3 className="text-base sm:text-xl font-bold text-gray-900 mb-2 sm:mb-4">성격</h3>
+                  <h3 className="text-base sm:text-xl font-bold text-gray-900 mb-2 sm:mb-4">{t('modal.personality')}</h3>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3 mb-4 sm:mb-6">
                     {character.personality.map((trait, i) => (
                       <div key={i} className="bg-orange-100 text-orange-700 px-2 py-1 sm:px-3 sm:py-2 rounded text-center font-medium text-xs sm:text-sm">
@@ -120,7 +117,7 @@ export default function BlogPostModal({ character, onClose }: BlogPostModalProps
               )}
               {character.memeQuotes && character.memeQuotes.length > 0 && (
                 <>
-                  <h3 className="text-base sm:text-xl font-bold text-gray-900 mb-2 sm:mb-4">유명한 대사들</h3>
+                  <h3 className="text-base sm:text-xl font-bold text-gray-900 mb-2 sm:mb-4">{t('modal.memeQuotes')}</h3>
                   <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6">
                     {character.memeQuotes.map((quote, i) => (
                       <blockquote key={i} className="bg-orange-50 border-l-4 border-orange-600 p-3 sm:p-4 italic text-gray-700 text-xs sm:text-base">
@@ -132,7 +129,7 @@ export default function BlogPostModal({ character, onClose }: BlogPostModalProps
               )}
               {character.trivia && character.trivia.length > 0 && (
                 <>
-                  <h3 className="text-base sm:text-xl font-bold text-gray-900 mb-2 sm:mb-4">재미있는 사실들</h3>
+                  <h3 className="text-base sm:text-xl font-bold text-gray-900 mb-2 sm:mb-4">{t('modal.trivia')}</h3>
                   <ul className="space-y-1 sm:space-y-2 mb-4 sm:mb-6">
                     {character.trivia.map((fact, i) => (
                       <li key={i} className="flex items-start gap-2 sm:gap-3">
@@ -149,7 +146,7 @@ export default function BlogPostModal({ character, onClose }: BlogPostModalProps
             {/* Tags */}
             {character.tags && character.tags.length > 0 && (
               <div className="pt-3 sm:pt-4 border-t border-gray-200">
-                <h4 className="font-medium text-gray-900 mb-2 sm:mb-3">태그</h4>
+                <h4 className="font-medium text-gray-900 mb-2 sm:mb-3">{t('modal.tags')}</h4>
                 <div className="flex flex-wrap gap-1 sm:gap-2">
                   {character.tags.map((tag, i) => (
                     <span 

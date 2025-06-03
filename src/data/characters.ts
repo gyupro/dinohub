@@ -2,13 +2,14 @@ export interface Character {
   id: string
   name: string
   nameKorean: string
-  nameItalian: string
+  scientificName: string
   emoji: string
   image: string
   category: string[]
   origin: string
   catchphrase: string
   description: string
+  temporalRange?: string
   detailedDescription?: string
   appearance?: string
   personality?: string[]
@@ -30,7 +31,7 @@ export const characters: Character[] = [
     id: "giovanni-giorgio",
     name: "Giovanni Giorgio",
     nameKorean: "조반니 조르지오",
-    nameItalian: "Giovanni Giorgio",
+    scientificName: "Giovanni Giorgio",
     emoji: "🕺🎵",
     image: "https://placehold.co/350x500/2a2a2a/ffffff?text=G.+Giorgio",
     category: ["밈 캐릭터", "음악 기반", "시간 능력자"],
@@ -78,7 +79,7 @@ export const characters: Character[] = [
     id: "peppino-spaghetti",
     name: "Peppino Spaghetti",
     nameKorean: "페피노 스파게티",
-    nameItalian: "Peppino Spaghetti",
+    scientificName: "Peppino Spaghetti",
     emoji: "👨‍🍳🍕",
     image: "https://placehold.co/350x500/2a2a2a/ffffff?text=Peppino",
     category: ["게임 캐릭터", "인디 게임", "코믹 호러"],
@@ -132,7 +133,7 @@ export const characters: Character[] = [
     id: "vecchio-del-sacco",
     name: "Vecchio del Sacco",
     nameKorean: "베키오 델 사코",
-    nameItalian: "Vecchio del Sacco",
+    scientificName: "Vecchio del Sacco",
     emoji: "👴🎒",
     image: "https://placehold.co/350x500/2a2a2a/ffffff?text=Vecchio",
     category: ["도시전설", "미스터리"],
@@ -150,7 +151,7 @@ export const characters: Character[] = [
     id: "marcello-mastroianni",
     name: "Marcello Mastroianni",
     nameKorean: "마르첼로 마스트로이아니",
-    nameItalian: "Marcello Mastroianni",
+    scientificName: "Marcello Mastroianni",
     emoji: "🕴️🎬",
     image: "https://placehold.co/350x500/2a2a2a/ffffff?text=Marcello",
     category: ["영화 배우", "클래식 시네마", "아이콘"],
@@ -168,7 +169,7 @@ export const characters: Character[] = [
     id: "antonio-margherita",
     name: "Antonio Margherita",
     nameKorean: "안토니오 마르게리타",
-    nameItalian: "Antonio Margherita",
+    scientificName: "Antonio Margherita",
     emoji: "👨‍🍳🍕",
     image: "https://placehold.co/350x500/2a2a2a/ffffff?text=Antonio",
     category: ["음식 밈", "셰프", "전통주의자"],
@@ -186,7 +187,7 @@ export const characters: Character[] = [
     id: "gino-dacampo",
     name: "Gino D'Acampo",
     nameKorean: "지노 다캄포",
-    nameItalian: "Gino D'Acampo",
+    scientificName: "Gino D'Acampo",
     emoji: "👨‍🍳😄",
     image: "https://placehold.co/350x500/2a2a2a/ffffff?text=Gino",
     category: ["방송인", "셰프", "코미디언"],
@@ -204,7 +205,7 @@ export const characters: Character[] = [
     id: "ezio-auditore",
     name: "Ezio Auditore da Firenze",
     nameKorean: "에지오 아우디토레 다 피렌체",
-    nameItalian: "Ezio Auditore da Firenze",
+    scientificName: "Ezio Auditore da Firenze",
     emoji: "🗡️🦅",
     image: "https://placehold.co/350x500/2a2a2a/ffffff?text=Ezio",
     category: ["게임 캐릭터", "역사 판타지", "암살자"],
@@ -222,7 +223,7 @@ export const characters: Character[] = [
     id: "mario-mario",
     name: "Mario Mario",
     nameKorean: "마리오 마리오",
-    nameItalian: "Mario Mario",
+    scientificName: "Mario Mario",
     emoji: "🍄👨‍🔧",
     image: "https://placehold.co/350x500/2a2a2a/ffffff?text=Mario",
     category: ["게임 캐릭터", "플랫포머", "닌텐도 아이콘"],
@@ -240,7 +241,7 @@ export const characters: Character[] = [
     id: "luigi-mario",
     name: "Luigi Mario",
     nameKorean: "루이지 마리오",
-    nameItalian: "Luigi Mario",
+    scientificName: "Luigi Mario",
     emoji: "👻💚",
     image: "https://placehold.co/350x500/2a2a2a/ffffff?text=Luigi",
     category: ["게임 캐릭터", "플랫포머", "영원한 2인자"],
@@ -258,7 +259,7 @@ export const characters: Character[] = [
     id: "salvatore-ganacci",
     name: "Salvatore Ganacci",
     nameKorean: "살바토레 가나치",
-    nameItalian: "Salvatore Ganacci",
+    scientificName: "Salvatore Ganacci",
     emoji: "🎧🕺🤪",
     image: "https://placehold.co/350x500/2a2a2a/ffffff?text=Salvatore",
     category: ["DJ/프로듀서", "음악 퍼포머", "인터넷 밈"],
@@ -334,7 +335,7 @@ export function searchCharacters(query: string): Character[] {
     const searchableText = [
       character.name,
       character.nameKorean,
-      character.nameItalian,
+      character.scientificName,
       character.description,
       character.detailedDescription || '',
       character.origin,

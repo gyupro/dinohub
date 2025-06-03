@@ -197,5 +197,19 @@
       "Jurassic": "쥐라기",
       "Cretaceous": "백악기"
     }
+  },
+  "modal": {
+    "basicInfo": "기본 정보",
+    "origin": "출처",
+    "scientificName": "학명",
+    "temporalRange": "발견 시대",
+    "locomotionType": "이동 방식",
+    "introduction": "소개",
+    "details": "상세 내용",
+    "appearance": "외형 특징",
+    "personality": "성격",
+    "memeQuotes": "유명한 대사들",
+    "trivia": "재미있는 사실들",
+    "tags": "태그"
   }
 } 
