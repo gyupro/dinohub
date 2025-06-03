@@ -95,88 +95,76 @@ export default function DinosaurBlogHomePage() {
             </div>
           </div>
           
-          <div className="max-w-full sm:max-w-2xl mx-auto flex flex-col gap-2 items-stretch">
-            {/* Search input only */}
-            <form onSubmit={handleSearchSubmit} className="relative w-full">
-              <div className="flex flex-col sm:flex-row gap-2 w-full">
-                <div className="relative flex-1">
-                  <input
-                    type="text"
-                    name="search"
-                    value={searchInput}
-                    onChange={e => setSearchInput(e.target.value)}
-                    placeholder={t('search.placeholder')}
-                    className="w-full px-3 py-2 text-gray-900 bg-white rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm"
-                    disabled={isLoading}
-                  />
-                  <div className="absolute inset-y-0 right-3 flex items-center">
-                    {isLoading ? (
-                      <div className="w-5 h-5 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
-                    ) : (
-                      <span className="text-gray-400 text-lg">🔍</span>
-                    )}
-                  </div>
-                </div>
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="px-4 py-2 bg-white text-orange-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200 disabled:opacity-50 text-sm"
+          {/* Search & Filter Card */}
+          <div className="bg-white/90 rounded-2xl shadow-lg p-4 mt-4 mb-6 max-w-md mx-auto flex flex-col gap-2">
+            <form onSubmit={handleSearchSubmit} className="flex flex-col gap-2 w-full">
+              <input
+                type="text"
+                name="search"
+                value={searchInput}
+                onChange={e => setSearchInput(e.target.value)}
+                placeholder={t('search.placeholder')}
+                className="w-full px-3 py-2 text-gray-900 bg-white rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm shadow-sm"
+                disabled={isLoading}
+              />
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full px-4 py-2 bg-orange-500 text-white font-semibold rounded-lg shadow hover:bg-orange-600 transition-colors duration-200 disabled:opacity-50 text-base"
+              >
+                {t('common.search')}
+              </button>
+              <div className="flex flex-col gap-2 mt-1">
+                <select
+                  value={diet}
+                  onChange={handleDietChange}
+                  className="w-full px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-sm"
                 >
-                  {t('common.search')}
-                </button>
+                  <option value="">{t('dinosaur.diet')}</option>
+                  <option value="herbivore">{t('dinosaur.herbivore')}</option>
+                  <option value="carnivore">{t('dinosaur.carnivore')}</option>
+                  <option value="omnivore">{t('dinosaur.omnivore')}</option>
+                  <option value="piscivore">{t('dinosaur.piscivore')}</option>
+                </select>
+                <select
+                  value={locomotionType}
+                  onChange={handleLocomotionChange}
+                  className="w-full px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-sm"
+                >
+                  <option value="">{t('dinosaur.locomotion')}</option>
+                  <option value="swimming">{t('dinosaur.swimming') || 'swimming'}</option>
+                  <option value="quadruped">{t('dinosaur.quadruped') || 'quadruped'}</option>
+                  <option value="gliding">{t('dinosaur.gliding') || 'gliding'}</option>
+                  <option value="biped">{t('dinosaur.biped') || 'biped'}</option>
+                </select>
+                <select
+                  value={localTemporalRange}
+                  onChange={handleTemporalRangeChange}
+                  className="w-full px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-sm"
+                >
+                  <option value="">{t('dinosaur.temporalRange')}</option>
+                  <option value="Triassic">{t('filter.temporalRange.Triassic')}</option>
+                  <option value="Jurassic">{t('filter.temporalRange.Jurassic')}</option>
+                  <option value="Cretaceous">{t('filter.temporalRange.Cretaceous')}</option>
+                </select>
               </div>
             </form>
-            {/* Filters below search */}
-            <div className="flex flex-col sm:flex-row gap-2 w-full mt-1 mb-1">
-              <select
-                value={diet}
-                onChange={handleDietChange}
-                className="w-full sm:w-auto px-3 py-2 rounded-lg border border-gray-200 bg-white text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
-              >
-                <option value="">{t('dinosaur.diet')}</option>
-                <option value="herbivore">{t('dinosaur.herbivore')}</option>
-                <option value="carnivore">{t('dinosaur.carnivore')}</option>
-                <option value="omnivore">{t('dinosaur.omnivore')}</option>
-                <option value="piscivore">{t('dinosaur.piscivore')}</option>
-              </select>
-              <select
-                value={locomotionType}
-                onChange={handleLocomotionChange}
-                className="w-full sm:w-auto px-3 py-2 rounded-lg border border-gray-200 bg-white text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
-              >
-                <option value="">{t('dinosaur.locomotion')}</option>
-                <option value="swimming">{t('dinosaur.swimming') || 'swimming'}</option>
-                <option value="quadruped">{t('dinosaur.quadruped') || 'quadruped'}</option>
-                <option value="gliding">{t('dinosaur.gliding') || 'gliding'}</option>
-                <option value="biped">{t('dinosaur.biped') || 'biped'}</option>
-              </select>
-              <select
-                value={localTemporalRange}
-                onChange={handleTemporalRangeChange}
-                className="w-full sm:w-auto px-3 py-2 rounded-lg border border-gray-200 bg-white text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
-              >
-                <option value="">{t('dinosaur.temporalRange')}</option>
-                <option value="Triassic">{t('filter.temporalRange.Triassic')}</option>
-                <option value="Jurassic">{t('filter.temporalRange.Jurassic')}</option>
-                <option value="Cretaceous">{t('filter.temporalRange.Cretaceous')}</option>
-              </select>
-              <button
-                type="button"
-                onClick={() => {
-                  setSearch('');
-                  setSearchInput('');
-                  setDiet('');
-                  setLocomotionType('');
-                  setTemporalRange('');
-                  setLocalTemporalRange('');
-                  setPage(1);
-                }}
-                className="w-full sm:w-auto px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors whitespace-nowrap text-sm"
-                style={{ minWidth: 90 }}
-              >
-                {t('common.clearAll')}
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={() => {
+                setSearch('');
+                setSearchInput('');
+                setDiet('');
+                setLocomotionType('');
+                setTemporalRange('');
+                setLocalTemporalRange('');
+                setPage(1);
+              }}
+              className="self-end mt-1 px-3 py-1 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors text-xs font-medium shadow"
+              style={{ minWidth: 80 }}
+            >
+              {t('common.clearAll')}
+            </button>
           </div>
         </div>
       </section>

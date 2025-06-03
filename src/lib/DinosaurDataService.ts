@@ -1,8 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 
 // Supabase 설정
-const SUPABASE_URL = 'https://rfcjwfcfjbykdpmgkmwm.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJmY2p3ZmNmamJ5a2RwbWdrbXdtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg1MDgyNjksImV4cCI6MjA2NDA4NDI2OX0.Ob7TiI21hY3DZUcBAT4n_OKIRtH1cmLrnpdi3cwjPIA';
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
