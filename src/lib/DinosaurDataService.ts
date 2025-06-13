@@ -45,6 +45,7 @@ export interface DinosaurFilters {
     diet?: string;
     locomotionType?: string;
     search?: string;
+    temporalRange?: string;
 }
 
 class DinosaurDataService {
@@ -403,10 +404,15 @@ class DinosaurDataService {
                 .select('*', { count: 'exact' }); 
 
             if (filters.diet) {
-                query = query.eq('diet', filters.diet);
+                console.log(`🍖 Applying diet filter: '${filters.diet}'`);
+                query = query.ilike('diet', `%${filters.diet}%`);
             }
             if (filters.locomotionType) {
-                query = query.ilike('locomotion_type', filters.locomotionType);
+                console.log(`🐾 Applying locomotion filter: '${filters.locomotionType}'`);
+                query = query.ilike('locomotion_type', `%${filters.locomotionType}%`);
+            }
+            if (filters.temporalRange) {
+                query = query.ilike('temporal_range', `%${filters.temporalRange}%`);
             }
             if (filters.search) {
                 // Assuming filters.search is used for a general text search on 'name' or 'description'
@@ -420,6 +426,16 @@ class DinosaurDataService {
             const { data: baseData, error, count } = await query;
 
             if (error) throw error;
+            
+            // Debug: log sample locomotion_type values when applying locomotion filter
+            if (filters.locomotionType && baseData && baseData.length > 0) {
+                console.log(`📋 Found ${baseData.length} results for locomotion '${filters.locomotionType}'. Sample values:`);
+                baseData.slice(0, 3).forEach((dino: any) => {
+                    console.log(`  - ${dino.name}: '${dino.locomotion_type}'`);
+                });
+            } else if (filters.locomotionType) {
+                console.log(`⚠️ No results found for locomotion filter '${filters.locomotionType}'`);
+            }
 
             // Fetch detailed image information for each dinosaur in parallel
             const dinosaursWithImages = await Promise.all(

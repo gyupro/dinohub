@@ -13,7 +13,8 @@
     "description": "Explore everything about dinosaurs with dinohub. Get the latest information and rich dinosaur data.",
     "title": "dinohub - All About Dinosaurs, dinohub",
     "viewMore": "View Details",
-    "clearAll": "Clear All"
+    "clearAll": "Clear All",
+    "page": "Page"
   },
   "dinosaur": {
     "name": "Name",
@@ -34,6 +35,14 @@
     "triassic": "Triassic",
     "jurassic": "Jurassic",
     "cretaceous": "Cretaceous",
+    "earlyCretaceous": "Early Cretaceous",
+    "lateCretaceous": "Late Cretaceous",
+    "size": "Size",
+    "small": "Small",
+    "medium": "Medium",
+    "large": "Large",
+    "gigantic": "Gigantic",
+    "locationPlaceholder": "Enter location (e.g. USA, China)",
     "terrestrial": "Terrestrial",
     "aquatic": "Aquatic",
     "flying": "Flying",
@@ -52,6 +61,7 @@
     "noResultsDescription": "Try different keywords",
     "filtering": "Filtering...",
     "clear": "Clear Search",
+    "advancedFilters": "Advanced Filters",
     "searchDinosaur": "Search Dinosaurs",
     "searching": "Searching...",
     "totalResults": "search results"

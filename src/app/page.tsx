@@ -64,39 +64,46 @@ export default function DinosaurBlogHomePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero section */}
-      <section className="bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 text-white py-4 sm:py-8 md:py-10">
-        <div className="max-w-7xl mx-auto px-2 sm:px-4 text-center">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-4 flex items-center justify-center gap-1 sm:gap-3">
-            <span className="animate-bounce">🦖</span>
-            <span>{t('home.heroTitle')}</span>
-            <span className="animate-bounce delay-75">🦕</span>
+      {/* Enhanced Hero section */}
+      <section className="relative bg-gradient-to-br from-orange-600 via-orange-500 to-amber-500 text-white py-6 sm:py-10 md:py-14 overflow-hidden">
+        {/* Animated background pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute -top-10 -left-10 w-40 h-40 bg-white rounded-full animate-floating"></div>
+          <div className="absolute top-20 right-10 w-60 h-60 bg-white rounded-full animate-floating animation-delay-2000"></div>
+          <div className="absolute bottom-10 left-1/3 w-32 h-32 bg-white rounded-full animate-floating animation-delay-4000"></div>
+        </div>
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 text-center">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-3 sm:mb-6 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
+            <span className="animate-bounce text-3xl sm:text-4xl md:text-5xl">🦖</span>
+            <span className="bg-gradient-to-r from-white to-orange-100 bg-clip-text text-transparent break-words max-w-full px-2">{t('home.heroTitle')}</span>
+            <span className="animate-bounce delay-75 text-3xl sm:text-4xl md:text-5xl">🦕</span>
           </h2>
           
-          <p className="text-sm sm:text-base md:text-lg opacity-90 mb-2 sm:mb-3 max-w-xl sm:max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl opacity-95 mb-6 sm:mb-8 max-w-2xl sm:max-w-3xl mx-auto leading-relaxed font-medium">
             {t('home.description')}
           </p>
           
-          <div className="flex gap-3 sm:gap-4 mb-4 sm:mb-6 max-w-full overflow-x-auto scrollbar-thin scrollbar-thumb-orange-300 scrollbar-track-transparent text-xs sm:text-sm px-1">
-            <div className="min-w-[160px] bg-white/10 backdrop-blur rounded-lg p-3 flex-shrink-0">
-              <div className="text-xl mb-1">🔬</div>
-              <div className="font-medium">{t('home.scientificAccuracy')}</div>
-              <div className="opacity-80 text-xs">{t('home.scientificAccuracyDesc')}</div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-10 px-2 sm:px-0">
+            <div className="bg-white/15 backdrop-blur-md rounded-xl sm:rounded-2xl p-3 sm:p-5 hover:bg-white/20 transition-all duration-300 hover:scale-105 border border-white/20 shadow-xl">
+              <div className="text-2xl sm:text-3xl mb-1 sm:mb-2">🔬</div>
+              <div className="font-bold text-base sm:text-lg mb-1">{t('home.scientificAccuracy')}</div>
+              <div className="opacity-90 text-xs sm:text-sm leading-relaxed">{t('home.scientificAccuracyDesc')}</div>
             </div>
-            <div className="min-w-[160px] bg-white/10 backdrop-blur rounded-lg p-3 flex-shrink-0">
-              <div className="text-xl mb-1">📚</div>
-              <div className="font-medium">{t('home.richData')}</div>
-              <div className="opacity-80 text-xs">{t('home.richDataDesc')}</div>
+            <div className="bg-white/15 backdrop-blur-md rounded-xl sm:rounded-2xl p-3 sm:p-5 hover:bg-white/20 transition-all duration-300 hover:scale-105 border border-white/20 shadow-xl">
+              <div className="text-2xl sm:text-3xl mb-1 sm:mb-2">📚</div>
+              <div className="font-bold text-base sm:text-lg mb-1">{t('home.richData')}</div>
+              <div className="opacity-90 text-xs sm:text-sm leading-relaxed">{t('home.richDataDesc')}</div>
             </div>
-            <div className="min-w-[160px] bg-white/10 backdrop-blur rounded-lg p-3 flex-shrink-0">
-              <div className="text-xl mb-1">🌍</div>
-              <div className="font-medium">{t('home.globalDiscovery')}</div>
-              <div className="opacity-80 text-xs">{t('home.globalDiscoveryDesc')}</div>
+            <div className="bg-white/15 backdrop-blur-md rounded-xl sm:rounded-2xl p-3 sm:p-5 hover:bg-white/20 transition-all duration-300 hover:scale-105 border border-white/20 shadow-xl">
+              <div className="text-2xl sm:text-3xl mb-1 sm:mb-2">🌍</div>
+              <div className="font-bold text-base sm:text-lg mb-1">{t('home.globalDiscovery')}</div>
+              <div className="opacity-90 text-xs sm:text-sm leading-relaxed">{t('home.globalDiscoveryDesc')}</div>
             </div>
           </div>
           
           {/* Search & Filter Card */}
-          <div className="max-w-3xl mx-auto mt-6 mb-10">
+          <div className="max-w-3xl mx-auto mt-4 sm:mt-6 mb-6 sm:mb-10 px-2 sm:px-4">
             <DinosaurSearch
               onSearch={async (query, filters) => {
                 setSearch(query);
@@ -154,16 +161,24 @@ export default function DinosaurBlogHomePage() {
           </div>
         )}
 
-        {/* Loading state */}
+        {/* Enhanced Loading state */}
         {!error && isLoading && (
-          <div className="text-center py-10 sm:py-14 md:py-16">
-            <div className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-2 sm:mb-4"></div>
-            <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900 mb-1 sm:mb-2">
-              {t('bestiary.loadingData')}
-            </h3>
-            <p className="text-gray-600 text-xs sm:text-sm">
-              {t('common.loading')}
-            </p>
+          <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 lg:gap-8 mb-6 sm:mb-10">
+            {[...Array(6)].map((_, index) => (
+              <div key={index} className="bg-white rounded-2xl border-2 border-gray-100 overflow-hidden p-4 sm:p-6 animate-pulse">
+                <div className="h-48 sm:h-64 bg-gray-200 rounded-xl mb-4"></div>
+                <div className="space-y-3">
+                  <div className="h-6 bg-gray-200 rounded-lg w-3/4"></div>
+                  <div className="h-4 bg-gray-200 rounded-lg w-1/2"></div>
+                  <div className="h-20 bg-gray-200 rounded-lg"></div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="h-16 bg-gray-200 rounded-xl"></div>
+                    <div className="h-16 bg-gray-200 rounded-xl"></div>
+                  </div>
+                  <div className="h-10 bg-gray-200 rounded-xl"></div>
+                </div>
+              </div>
+            ))}
           </div>
         )}
 

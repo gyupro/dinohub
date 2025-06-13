@@ -12,13 +12,15 @@ export async function GET(request: NextRequest) {
         const locomotionType = searchParams.get('locomotionType') || undefined;
         const period = searchParams.get('period') || undefined;
 
-        console.log(`🔍 API 요청: page=${page}, limit=${limit}`);
+        console.log(`🔍 API 요청: page=${page}, limit=${limit}, diet=${diet}, locomotionType=${locomotionType}, period=${period}`);
 
         // 필터 객체 생성
         const filters: any = {};
         if (diet) filters.diet = diet;
         if (locomotionType) filters.locomotionType = locomotionType;
         if (period) filters.search = period;
+        
+        console.log('🔧 Filters object:', JSON.stringify(filters, null, 2));
 
         // Supabase에서 페이지네이션된 데이터 가져오기
         const result = await dinosaurService.getPaginatedDinosaurs(page, limit, filters);

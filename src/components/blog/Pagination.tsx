@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 interface PaginationProps {
   currentPage: number
   totalPages: number
@@ -5,6 +7,8 @@ interface PaginationProps {
 }
 
 export default function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) {
+  const { t } = useTranslation()
+  
   if (totalPages <= 1) return null;
 
   // 페이지 번호 생성 로직 (스마트 페이지네이션)
@@ -50,15 +54,18 @@ export default function Pagination({ currentPage, totalPages, onPageChange }: Pa
   const pageNumbers = getPageNumbers();
 
   return (
-    <div className="flex justify-center items-center gap-1 flex-wrap">
-      {/* 이전 버튼 */}
-      <button 
-        onClick={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-        className="px-3 py-2 text-sm text-gray-600 disabled:text-gray-400 hover:text-orange-600 transition-colors duration-200 disabled:cursor-not-allowed rounded-lg hover:bg-orange-50"
-      >
-        ← 이전
-      </button>
+    <nav aria-label="Pagination Navigation" className="mt-8">
+      <div className="flex justify-center items-center gap-2 flex-wrap p-4 bg-white rounded-2xl shadow-lg border border-gray-100">
+        {/* Previous button */}
+        <button 
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="group px-4 py-2.5 text-sm font-medium text-gray-700 disabled:text-gray-400 hover:text-white transition-all duration-300 disabled:cursor-not-allowed rounded-xl hover:bg-gradient-to-r hover:from-orange-500 hover:to-amber-500 hover:shadow-lg disabled:hover:bg-transparent disabled:hover:text-gray-400 flex items-center gap-2"
+          aria-label="Go to previous page"
+        >
+          <span className="transform group-hover:-translate-x-1 transition-transform duration-300">←</span>
+          <span>{t('common.previous')}</span>
+        </button>
       
       {/* 페이지 번호들 */}
       {pageNumbers.map((page, index) => {
@@ -66,9 +73,10 @@ export default function Pagination({ currentPage, totalPages, onPageChange }: Pa
           return (
             <span 
               key={`ellipsis-${index}`}
-              className="px-3 py-2 text-gray-500 select-none"
+              className="px-3 py-2 text-gray-400 select-none text-lg font-bold"
+              aria-hidden="true"
             >
-              ...
+              …
             </span>
           );
         }
@@ -78,30 +86,40 @@ export default function Pagination({ currentPage, totalPages, onPageChange }: Pa
           <button
             key={pageNum}
             onClick={() => onPageChange(pageNum)}
-            className={`w-9 h-9 text-sm rounded-lg transition-all duration-200 ${
+            className={`relative w-10 h-10 text-sm font-bold rounded-xl transition-all duration-300 ${
               pageNum === currentPage
-                ? 'bg-orange-500 text-white shadow-md scale-105'
-                : 'text-gray-600 hover:bg-orange-100 hover:text-orange-700'
+                ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg scale-110 animate-pulse'
+                : 'text-gray-600 hover:bg-orange-100 hover:text-orange-700 hover:scale-105'
             }`}
+            aria-label={`Go to page ${pageNum}`}
+            aria-current={pageNum === currentPage ? 'page' : undefined}
           >
             {pageNum}
+            {pageNum === currentPage && (
+              <span className="absolute inset-0 rounded-xl bg-white opacity-20 animate-ping"></span>
+            )}
           </button>
         );
       })}
       
-      {/* 다음 버튼 */}
-      <button 
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-        className="px-3 py-2 text-sm text-gray-600 disabled:text-gray-400 hover:text-orange-600 transition-colors duration-200 disabled:cursor-not-allowed rounded-lg hover:bg-orange-50"
-      >
-        다음 →
-      </button>
+        {/* Next button */}
+        <button 
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="group px-4 py-2.5 text-sm font-medium text-gray-700 disabled:text-gray-400 hover:text-white transition-all duration-300 disabled:cursor-not-allowed rounded-xl hover:bg-gradient-to-r hover:from-orange-500 hover:to-amber-500 hover:shadow-lg disabled:hover:bg-transparent disabled:hover:text-gray-400 flex items-center gap-2"
+          aria-label="Go to next page"
+        >
+          <span>{t('common.next')}</span>
+          <span className="transform group-hover:translate-x-1 transition-transform duration-300">→</span>
+        </button>
       
-      {/* 페이지 정보 */}
-      <div className="ml-4 text-sm text-gray-500 hidden sm:block">
-        {currentPage} / {totalPages} 페이지
+        {/* Page info */}
+        <div className="ml-4 px-4 py-2 bg-gray-100 rounded-xl hidden sm:block">
+          <span className="text-sm font-medium text-gray-600">
+            Page <span className="text-orange-600 font-bold">{currentPage}</span> / {totalPages}
+          </span>
+        </div>
       </div>
-    </div>
+    </nav>
   );
 } 
