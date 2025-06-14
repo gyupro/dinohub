@@ -11,7 +11,7 @@ export default function Navigation() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4">
-      <div className="max-w-7xl mx-auto bg-gray-800/80 backdrop-blur-lg border border-gray-700 rounded-2xl px-8 py-4 shadow-2xl">
+      <div className="max-w-7xl mx-auto bg-gray-800/70 backdrop-blur-xl border border-gray-600/50 rounded-2xl px-8 py-4 shadow-2xl">
         <div className="flex justify-between items-center">
           {/* 로고 */}
           <Link href="/" className="group flex items-center gap-3 hover:scale-105 transition-all duration-300">
@@ -60,7 +60,7 @@ export default function Navigation() {
             
             <Link
               href="/generator"
-              className="group flex items-center gap-2 px-3 py-2 bg-orange-600/80 hover:bg-orange-700/90 rounded-lg text-white font-semibold transition-all duration-200 shadow-md border border-orange-400/30"
+              className="group flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 rounded-full text-white font-semibold transition-all duration-200 shadow-lg transform hover:scale-105"
             >
               <span className="text-lg">🔬</span>
               <span>{t('navigation.scientificInfo')}</span>
@@ -69,12 +69,6 @@ export default function Navigation() {
 
           {/* 언어 변경 및 모바일 메뉴 */}
           <div className="flex items-center gap-4">
-            {/* 모바일 메뉴 버튼 */}
-            <button className="md:hidden flex items-center justify-center w-10 h-10 bg-white/10 rounded-full text-gray-100 hover:bg-white/20 transition-colors">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
           </div>
         </div>
 

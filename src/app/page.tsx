@@ -3,22 +3,36 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import DinosaurSearch from '@/components/DinosaurSearch'
+import DinosaurSearchFixed from '@/components/DinosaurSearchFixed'
+import DinosaurSearchUnified from '@/components/DinosaurSearchUnified'
+import DinosaurSearchClean from '@/components/DinosaurSearchClean'
 import DinosaurPost from '@/components/blog/DinosaurPost'
+import DinosaurPostImproved from '@/components/blog/DinosaurPostImproved'
 import BlogPostModal from '@/components/blog/BlogPostModal'
 import Pagination from '@/components/blog/Pagination'
+import PaginationImproved from '@/components/blog/PaginationImproved'
+import PaginationNoScroll from '@/components/blog/PaginationNoScroll'
 import BlogHeader from '@/components/layout/BlogHeader'
 import BlogFooter from '@/components/layout/BlogFooter'
 import { useDinosaurData } from '@/hooks/useDinosaurData'
+import { useDinosaurDataImproved } from '@/hooks/useDinosaurDataImproved'
+import { useDinosaurDataFixed } from '@/hooks/useDinosaurDataFixed'
+import { useDinosaurDataNoScroll } from '@/hooks/useDinosaurDataNoScroll'
 import { Dinosaur } from '@/data/dinosaurs'
 import type { Dinosaur as DinosaurType } from '@/data/dinosaurs'
 
 export default function DinosaurBlogHomePage() {
   const [selectedDinosaur, setSelectedDinosaur] = useState<Dinosaur | null>(null)
+  const [useImprovedComponents, setUseImprovedComponents] = useState(true) // Toggle for A/B testing
+  const [useFixedPagination, setUseFixedPagination] = useState(true) // Use fixed pagination by default
+  const [useNoScrollPagination, setUseNoScrollPagination] = useState(true) // Use no-scroll pagination by default
   const { t } = useTranslation()
   
+  // Use fixed hook to prevent pagination resets
   const {
     dinosaurs,
     isLoading,
+    isPaginating,
     error,
     search,
     diet,
@@ -31,8 +45,9 @@ export default function DinosaurBlogHomePage() {
     setDiet,
     setLocomotionType,
     setTemporalRange,
-    setPage
-  } = useDinosaurData(12)
+    setPage,
+    prefetchPage
+  } = useNoScrollPagination ? useDinosaurDataNoScroll(12) : (useFixedPagination ? useDinosaurDataFixed(12) : useDinosaurDataImproved(12))
 
   // For search input local state
   const [searchInput, setSearchInput] = useState(search);
@@ -104,22 +119,29 @@ export default function DinosaurBlogHomePage() {
           
           {/* Search & Filter Card */}
           <div className="max-w-3xl mx-auto mt-4 sm:mt-6 mb-6 sm:mb-10 px-2 sm:px-4">
-            <DinosaurSearch
+            <DinosaurSearchClean
               onSearch={async (query, filters) => {
                 setSearch(query);
                 setDiet(filters?.diet || '');
                 setLocomotionType(filters?.locomotionType || '');
-                setPage(1);
+                // Don't reset page here if using fixed pagination - the hook will handle it
+                if (!useFixedPagination) {
+                  setPage(1);
+                }
               }}
               onSearchStateChange={(searching) => {
                 if (!searching) {
                   setSearch('');
                   setDiet('');
                   setLocomotionType('');
-                  setPage(1);
+                  // Don't reset page here if using fixed pagination
+                  if (!useFixedPagination) {
+                    setPage(1);
+                  }
                 }
               }}
-              isLoading={isLoading}
+              isLoading={isLoading || isPaginating}
+              initialValues={{ search, diet, locomotionType }}
             />
           </div>
         </div>
@@ -127,19 +149,72 @@ export default function DinosaurBlogHomePage() {
 
       {/* Main content */}
       <main className="max-w-7xl mx-auto px-2 sm:px-4 py-4 sm:py-6 md:py-8">
-        {/* Page title */}
+        {/* Page title with component toggle */}
         <div className="mb-6 sm:mb-8">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">
-            {search ? `${t('search.results')} (${totalCount}${t('search.totalResults')})` : t('bestiary.title')}
-          </h2>
-          <p className="text-gray-600 text-sm sm:text-base">
-            {search ? t('bestiary.searchKeyword') : t('home.description')}
-          </p>
-          {!search && totalCount > 0 && (
-            <div className="mt-1 sm:mt-2 text-xs sm:text-sm text-orange-600 font-medium">
-              📊 {t('bestiary.databaseSummary', { count: totalCount, perPage: 12 })}
+          <div className="flex justify-between items-start">
+            <div className="flex-1">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">
+                {search ? `${t('search.results')} (${totalCount}${t('search.totalResults')})` : t('bestiary.title')}
+              </h2>
+              <p className="text-gray-600 text-sm sm:text-base">
+                {search ? t('bestiary.searchKeyword') : t('home.description')}
+              </p>
+              {!search && totalCount > 0 && (
+                <div className="mt-1 sm:mt-2 text-xs sm:text-sm text-orange-600 font-medium">
+                  📊 {t('bestiary.databaseSummary', { count: totalCount, perPage: 12 })}
+                </div>
+              )}
             </div>
-          )}
+            {/* Component toggles for demo */}
+            <div className="hidden lg:flex flex-col gap-2">
+              <div className="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
+                <span className="text-xs font-medium text-gray-600 px-2">UI:</span>
+                <button
+                  onClick={() => setUseImprovedComponents(false)}
+                  className={`px-3 py-1.5 rounded text-sm font-medium transition-all ${
+                    !useImprovedComponents
+                      ? 'bg-white text-gray-900 shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  Original
+                </button>
+                <button
+                  onClick={() => setUseImprovedComponents(true)}
+                  className={`px-3 py-1.5 rounded text-sm font-medium transition-all ${
+                    useImprovedComponents
+                      ? 'bg-white text-gray-900 shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  Improved ✨
+                </button>
+              </div>
+              <div className="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
+                <span className="text-xs font-medium text-gray-600 px-2">Pagination:</span>
+                <button
+                  onClick={() => setUseFixedPagination(false)}
+                  className={`px-3 py-1.5 rounded text-sm font-medium transition-all ${
+                    !useFixedPagination
+                      ? 'bg-white text-gray-900 shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  Buggy
+                </button>
+                <button
+                  onClick={() => setUseFixedPagination(true)}
+                  className={`px-3 py-1.5 rounded text-sm font-medium transition-all ${
+                    useFixedPagination
+                      ? 'bg-white text-gray-900 shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  Fixed ✅
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Error state */}
@@ -195,18 +270,37 @@ export default function DinosaurBlogHomePage() {
           </div>
         ) : !error && !isLoading && (
           <>
-            <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 lg:gap-8 mb-6 sm:mb-10">
-              {listToDisplay.map((dinosaur, index) => (
-                <DinosaurPost
-                  key={`${dinosaur.id || index}-${dinosaur.name}-${index}`}
-                  dinosaur={dinosaur}
-                  onClick={() => setSelectedDinosaur(dinosaur)}
-                />
-              ))}
+            <div className={`grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 lg:gap-8 mb-6 sm:mb-10 transition-opacity duration-300 ${isPaginating ? 'opacity-50' : 'opacity-100'}`}>
+              {listToDisplay.map((dinosaur, index) => {
+                const Component = useImprovedComponents ? DinosaurPostImproved : DinosaurPost;
+                return (
+                  <Component
+                    key={`${dinosaur.id || index}-${dinosaur.name}-${index}`}
+                    dinosaur={dinosaur}
+                    onClick={() => setSelectedDinosaur(dinosaur)}
+                  />
+                );
+              })}
             </div>
 
             {/* Pagination */}
-            {totalPages > 1 && (
+            {totalPages > 1 && useNoScrollPagination ? (
+              <PaginationNoScroll
+                currentPage={page}
+                totalPages={totalPages}
+                onPageChange={setPage}
+                onPrefetch={prefetchPage}
+                isPaginating={isPaginating}
+              />
+            ) : totalPages > 1 && useImprovedComponents ? (
+              <PaginationImproved
+                currentPage={page}
+                totalPages={totalPages}
+                onPageChange={setPage}
+                onPrefetch={prefetchPage}
+                isPaginating={isPaginating}
+              />
+            ) : totalPages > 1 && (
               <Pagination
                 currentPage={page}
                 totalPages={totalPages}

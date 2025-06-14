@@ -41,7 +41,9 @@ const config: Config = {
         'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
         'slide-up': 'slide-up 0.6s ease-out',
         'scale-in': 'scale-in 0.5s ease-out',
-        'fade-in': 'fade-in 0.4s ease-out'
+        'fade-in': 'fade-in 0.4s ease-out',
+        'fadeIn': 'fadeIn 0.5s ease-out',
+        'scaleIn': 'scaleIn 0.3s ease-out'
       },
       keyframes: {
         'dino-pulse': {
@@ -76,6 +78,14 @@ const config: Config = {
         'fade-in': {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' }
+        },
+        'fadeIn': {
+          'from': { opacity: '0' },
+          'to': { opacity: '1' }
+        },
+        'scaleIn': {
+          'from': { transform: 'scale(0.95)', opacity: '0' },
+          'to': { transform: 'scale(1)', opacity: '1' }
         }
       },
       boxShadow: {

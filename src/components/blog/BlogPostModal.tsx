@@ -20,8 +20,8 @@ export default function BlogPostModal({ character, onClose }: BlogPostModalProps
   if (!character) return null;
 
   return (
-    <div className="fixed inset-0 z-[999] bg-black/50 flex items-center justify-center px-1 py-4" onClick={onClose}>
-      <div className="w-full max-w-sm sm:max-w-lg bg-white rounded-lg sm:rounded-xl overflow-hidden shadow-lg" onClick={e => e.stopPropagation()}>
+    <div className="fixed inset-0 z-[999] bg-black/60 backdrop-blur-sm flex items-center justify-center px-1 py-4" onClick={onClose}>
+      <div className="w-full max-w-sm sm:max-w-lg bg-white rounded-2xl overflow-hidden shadow-2xl transform transition-all duration-300 scale-100" onClick={e => e.stopPropagation()}>
         {/* Header */}
         <div className="relative">
           <Image 
@@ -44,7 +44,7 @@ export default function BlogPostModal({ character, onClose }: BlogPostModalProps
               <span className="bg-white text-orange-600 px-2 py-1 rounded text-xs sm:text-sm font-medium">
                 {character.category?.[0]}
               </span>
-              <span className="text-xs sm:text-sm opacity-90">2024년 12월</span>
+              <span className="text-xs sm:text-sm opacity-90">2025년 1월</span>
             </div>
             <h1 className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2">{character.name}</h1>
             <p className="text-base sm:text-lg opacity-90">{character.nameKorean}</p>
@@ -62,10 +62,6 @@ export default function BlogPostModal({ character, onClose }: BlogPostModalProps
                 <span>{Math.floor(Math.random() * 1000) + 100} views</span>
                 <span>{Math.floor(Math.random() * 50) + 10} comments</span>
                 <span>{Math.floor(Math.random() * 200) + 50} likes</span>
-              </div>
-              <div className="flex gap-2 w-full sm:w-auto">
-                <button className="flex-1 px-2 py-2 sm:px-3 bg-orange-600 text-white rounded hover:bg-orange-700 text-xs sm:text-sm">공유하기</button>
-                <button className="flex-1 px-2 py-2 sm:px-3 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 text-xs sm:text-sm">북마크</button>
               </div>
             </div>
             {/* Main content */}

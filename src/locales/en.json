@@ -64,7 +64,9 @@
     "advancedFilters": "Advanced Filters",
     "searchDinosaur": "Search Dinosaurs",
     "searching": "Searching...",
-    "totalResults": "search results"
+    "totalResults": "search results",
+    "clearAll": "Clear All",
+    "helpText": "Enter dinosaur name or use filters to search"
   },
   "navigation": {
     "home": "Home",
@@ -210,7 +212,7 @@
     "mythic": "Mythic"
   },
   "footer": {
-    "copyright": "© 2024 dinohub. All dinosaur discovery rights reserved.",
+    "copyright": "© 2025 dinohub. All dinosaur discovery rights reserved.",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
     "contact": "Contact Us"

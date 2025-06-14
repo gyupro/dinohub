@@ -1,59 +1,104 @@
-import { useState, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
+'use client'
 
-// Mapping UI filter values to database values
-const locomotionTypeMapping = {
-  'swimming': 'swimming',
-  'gliding': 'gliding',
-  'quadruped': 'quadruped',
-  'biped': 'biped'
-} as const;
+import { useState, useEffect, useCallback, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
+import { LOCOMOTION_TYPES, LOCOMOTION_ICONS, LOCOMOTION_TRANSLATION_KEYS } from '@/constants/locomotionTypes'
 
 interface DinosaurSearchProps {
-  onSearch: (query: string, filters?: { diet?: string; locomotionType?: string }) => Promise<void>
-  onSearchStateChange: (searching: boolean) => void
+  onSearch: (query: string, filters?: any) => Promise<void>
+  onSearchStateChange: (isSearching: boolean) => void
   isLoading?: boolean
+  initialValues?: {
+    search?: string;
+    diet?: string;
+    locomotionType?: string;
+  }
 }
 
-export default function DinosaurSearch({ onSearch, onSearchStateChange, isLoading }: DinosaurSearchProps) {
-  const [searchQuery, setSearchQuery] = useState('')
-  const [diet, setDiet] = useState('')
-  const [locomotionType, setLocomotionType] = useState('')
+export default function DinosaurSearchUnified({ 
+  onSearch, 
+  onSearchStateChange, 
+  isLoading = false,
+  initialValues = {}
+}: DinosaurSearchProps) {
   const { t } = useTranslation()
+  const [searchQuery, setSearchQuery] = useState(initialValues.search || '')
+  const [diet, setDiet] = useState(initialValues.diet || '')
+  const [locomotionType, setLocomotionType] = useState(initialValues.locomotionType || '')
+  
+  // Track previous values to detect actual changes
+  const prevValuesRef = useRef({ searchQuery, diet, locomotionType });
+  const isInitialMount = useRef(true);
 
-  // Known locomotion types from the database
+  // Check actual locomotion types in the database
   useEffect(() => {
+    const checkActualLocomotionTypes = async () => {
+      try {
+        const response = await fetch('/api/dinosaurs/stats');
+        if (!response.ok) {
+          console.warn('Stats API endpoint not available');
+          return;
+        }
+        
+        const data = await response.json();
+        
+        // Safely access nested properties
+        if (data && data.data && data.data.locomotionDistribution) {
+          console.log('🔍 Actual locomotion types in database:', Object.keys(data.data.locomotionDistribution));
+          console.log('📊 Full locomotion distribution:', data.data.locomotionDistribution);
+        } else {
+          console.log('ℹ️ Locomotion distribution data not available');
+        }
+      } catch (error) {
+        console.warn('Stats API not available, continuing without stats', error);
+      }
+    };
+    
+    // Only run in development
     if (process.env.NODE_ENV === 'development') {
-      console.log('🦕 Known locomotion types: swimming, gliding, quadruped, biped');
-      console.log('🗺️ Using locomotion type mapping:', locomotionTypeMapping);
+      checkActualLocomotionTypes();
     }
   }, []);
 
-  // Auto-apply filters when they change
+  // Debounced filter application
   useEffect(() => {
+    // Skip on initial mount
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    
     const applyFilters = async () => {
-      console.log('🔧 Filter values:', { searchQuery, diet, locomotionType });
-      if (!searchQuery.trim() && !diet && !locomotionType) {
-        console.log('🚫 No filters active, clearing search');
-        onSearchStateChange(false);
+      const prevValues = prevValuesRef.current;
+      const hasChanges = 
+        prevValues.searchQuery !== searchQuery ||
+        prevValues.diet !== diet ||
+        prevValues.locomotionType !== locomotionType;
+      
+      if (!hasChanges) {
+        console.log('🚫 No actual filter changes, skipping search');
         return;
       }
       
-      // Map locomotion type to database value
-      const mappedLocomotionType = locomotionType ? locomotionTypeMapping[locomotionType as keyof typeof locomotionTypeMapping] || locomotionType : '';
-      console.log('🗺️ Locomotion mapping:', {
-        original: locomotionType,
-        mapped: mappedLocomotionType,
-        available_options: Object.keys(locomotionTypeMapping)
-      });
+      console.log('🔧 Filter values changed:', { searchQuery, diet, locomotionType });
+      
+      if (!searchQuery.trim() && !diet && !locomotionType) {
+        console.log('🚫 No filters active, clearing search');
+        onSearchStateChange(false);
+        prevValuesRef.current = { searchQuery, diet, locomotionType };
+        return;
+      }
       
       console.log('🔍 Sending search request with filters:', {
         query: searchQuery,
         diet: diet,
-        locomotionType: mappedLocomotionType
+        locomotionType: locomotionType // Direct value, no mapping needed
       });
       
-      await onSearch(searchQuery, { diet, locomotionType: mappedLocomotionType });
+      await onSearch(searchQuery, { diet, locomotionType });
+      
+      // Update ref after successful search
+      prevValuesRef.current = { searchQuery, diet, locomotionType };
     }
     
     const timeoutId = setTimeout(() => {
@@ -76,6 +121,8 @@ export default function DinosaurSearch({ onSearch, onSearchStateChange, isLoadin
     onSearchStateChange(false)
     // Clear filters immediately
     await onSearch('', { diet: '', locomotionType: '' })
+    // Update ref
+    prevValuesRef.current = { searchQuery: '', diet: '', locomotionType: '' };
   }
 
   return (
@@ -98,7 +145,7 @@ export default function DinosaurSearch({ onSearch, onSearchStateChange, isLoadin
           )}
           {locomotionType && (
             <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs bg-blue-100 text-blue-700 border border-blue-200">
-              🚶 {t(`dinosaur.${locomotionType}`)}
+              {LOCOMOTION_ICONS[locomotionType as keyof typeof LOCOMOTION_ICONS] || '🦕'} {t(LOCOMOTION_TRANSLATION_KEYS[locomotionType as keyof typeof LOCOMOTION_TRANSLATION_KEYS] || locomotionType)}
               <button 
                 type="button" 
                 onClick={() => setLocomotionType('')} 
@@ -151,10 +198,10 @@ export default function DinosaurSearch({ onSearch, onSearchStateChange, isLoadin
               aria-label="Filter by locomotion type"
             >
               <option value="">{t('dinosaur.locomotion')} — {t('categories.all')}</option>
-              <option value="swimming">🏊 {t('dinosaur.swimming')}</option>
-              <option value="gliding">🦅 {t('dinosaur.gliding')}</option>
-              <option value="quadruped">🦏 {t('dinosaur.quadruped')}</option>
-              <option value="biped">🚶 {t('dinosaur.biped')}</option>
+              <option value={LOCOMOTION_TYPES.QUADRUPED}>{LOCOMOTION_ICONS[LOCOMOTION_TYPES.QUADRUPED]} {t(LOCOMOTION_TRANSLATION_KEYS[LOCOMOTION_TYPES.QUADRUPED])}</option>
+              <option value={LOCOMOTION_TYPES.BIPED}>{LOCOMOTION_ICONS[LOCOMOTION_TYPES.BIPED]} {t(LOCOMOTION_TRANSLATION_KEYS[LOCOMOTION_TYPES.BIPED])}</option>
+              <option value={LOCOMOTION_TYPES.GLIDING}>{LOCOMOTION_ICONS[LOCOMOTION_TYPES.GLIDING]} {t(LOCOMOTION_TRANSLATION_KEYS[LOCOMOTION_TYPES.GLIDING])}</option>
+              <option value={LOCOMOTION_TYPES.SWIMMING}>{LOCOMOTION_ICONS[LOCOMOTION_TYPES.SWIMMING]} {t(LOCOMOTION_TRANSLATION_KEYS[LOCOMOTION_TYPES.SWIMMING])}</option>
             </select>
           </div>
         </div>
@@ -185,19 +232,21 @@ export default function DinosaurSearch({ onSearch, onSearchStateChange, isLoadin
         
         {(searchQuery || diet || locomotionType) && (
           <div className="flex justify-center">
-            <button
+            <button 
               type="button"
               onClick={handleClear}
-              className="px-6 py-3 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-all duration-200 flex items-center gap-2 font-medium shadow-lg"
+              className="flex items-center gap-2 px-4 py-2 text-sm text-white bg-red-500 hover:bg-red-600 rounded-full transition-colors shadow-md"
+              aria-label="Clear all filters"
             >
-              <span>🗑️</span>
-              <span>{t('common.clearAll')}</span>
+              <span>✕</span>
+              <span>{t('search.clearAll')}</span>
             </button>
           </div>
         )}
       </div>
-      <div id="search-description" className="mt-2 text-xs text-white/80 text-center">
-        <span aria-hidden="true">🦕</span> {t('home.searchDescription')}
+      
+      <div id="search-description" className="sr-only">
+        {t('search.helpText')}
       </div>
     </form>
   )

@@ -65,7 +65,9 @@
     "advancedFilters": "고급 필터",
     "searchDinosaur": "공룡 검색",
     "searching": "검색 중...",
-    "totalResults": "개의 검색 결과"
+    "totalResults": "개의 검색 결과",
+    "clearAll": "모두 지우기",
+    "helpText": "공룡 이름을 입력하거나 필터를 사용하여 검색하세요"
   },
   "navigation": {
     "home": "홈",
@@ -211,7 +213,7 @@
     "mythic": "신화"
   },
   "footer": {
-    "copyright": "© 2024 dinohub. 모든 공룡 정보의 권리는 dinohub에 있습니다.",
+    "copyright": "© 2025 dinohub. 모든 공룡 정보의 권리는 dinohub에 있습니다.",
     "privacy": "개인정보처리방침",
     "terms": "이용약관",
     "contact": "문의하기"

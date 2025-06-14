@@ -1,6 +1,7 @@
 import { Dinosaur } from '@/data/dinosaurs'
 import { useTranslation } from 'react-i18next'
 import Image from 'next/image'
+import { getLocomotionIcon } from '@/constants/locomotionTypes'
 
 interface DinosaurPostProps {
   dinosaur: Dinosaur
@@ -31,14 +32,7 @@ export default function DinosaurPost({ dinosaur, onClick }: DinosaurPostProps) {
   }
 
   const getTypeIcon = (type?: string) => {
-    if (!type) return '🦕';
-    const lowerType = type.toLowerCase();
-    if (lowerType.includes('terrestrial')) return '🏃';
-    if (lowerType.includes('aquatic') || lowerType.includes('semi-aquatic')) return '🏊';
-    if (lowerType.includes('flying')) return '🦅';
-    if (lowerType.includes('bipedal')) return '🚶';
-    if (lowerType.includes('quadrupedal')) return '🦏';
-    return '🦕';
+    return getLocomotionIcon(type);
   }
 
   const dietInfo = getDietInfo(dinosaur.diet);
@@ -170,10 +164,6 @@ export default function DinosaurPost({ dinosaur, onClick }: DinosaurPostProps) {
             </span>
           </div>
           
-          <button className="flex items-center gap-2 bg-gradient-to-r from-orange-500 to-amber-500 text-white px-4 py-2 rounded-xl font-bold text-sm hover:shadow-lg transform hover:scale-105 transition-all duration-300">
-            <span>{t('common.viewMore')}</span>
-            <span className="text-lg group-hover:translate-x-1 transition-transform duration-300">→</span>
-          </button>
         </div>
       </div>
     </article>
