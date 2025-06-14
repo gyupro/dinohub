@@ -28,7 +28,12 @@ export default function DinosaurBlogHomePage() {
   const [useNoScrollPagination, setUseNoScrollPagination] = useState(true) // Use no-scroll pagination by default
   const { t } = useTranslation()
   
-  // Use fixed hook to prevent pagination resets
+  // Call all hooks unconditionally
+  const dinosaurDataNoScroll = useDinosaurDataNoScroll(12);
+  const dinosaurDataFixed = useDinosaurDataFixed(12);
+  const dinosaurDataImproved = useDinosaurDataImproved(12);
+  
+  // Select which hook data to use based on settings
   const {
     dinosaurs,
     isLoading,
@@ -47,7 +52,7 @@ export default function DinosaurBlogHomePage() {
     setTemporalRange,
     setPage,
     prefetchPage
-  } = useNoScrollPagination ? useDinosaurDataNoScroll(12) : (useFixedPagination ? useDinosaurDataFixed(12) : useDinosaurDataImproved(12))
+  } = useNoScrollPagination ? dinosaurDataNoScroll : (useFixedPagination ? dinosaurDataFixed : dinosaurDataImproved)
 
   // For search input local state
   const [searchInput, setSearchInput] = useState(search);

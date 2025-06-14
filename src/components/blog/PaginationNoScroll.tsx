@@ -19,8 +19,6 @@ export default function PaginationNoScroll({
   const { t } = useTranslation()
   const [isTransitioning, setIsTransitioning] = useState(false)
   
-  if (totalPages <= 1) return null;
-
   // Page change WITHOUT scroll
   const handlePageChange = useCallback((page: number) => {
     if (page === currentPage || isTransitioning) return;
@@ -41,11 +39,11 @@ export default function PaginationNoScroll({
   }, [currentPage, isTransitioning, onPageChange]);
 
   // Prefetch on hover
-  const handleHover = (page: number) => {
+  const handleHover = useCallback((page: number) => {
     if (onPrefetch && page !== currentPage) {
       onPrefetch(page);
     }
-  };
+  }, [onPrefetch, currentPage]);
 
   // Keyboard navigation (without scroll)
   useEffect(() => {
@@ -68,7 +66,7 @@ export default function PaginationNoScroll({
   }, [currentPage, totalPages, handlePageChange]);
 
   // Page numbers generation logic
-  const getPageNumbers = () => {
+  const getPageNumbers = useCallback(() => {
     const pages: (number | string)[] = [];
     
     if (totalPages <= 7) {
@@ -100,9 +98,12 @@ export default function PaginationNoScroll({
     }
     
     return pages;
-  };
+  }, [currentPage, totalPages]);
 
   const pageNumbers = getPageNumbers();
+  
+  // Early return after all hooks
+  if (totalPages <= 1) return null;
 
   return (
     <nav aria-label="Pagination Navigation" className="mt-8 relative">
