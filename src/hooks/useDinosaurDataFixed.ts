@@ -53,11 +53,11 @@ export function useDinosaurDataFixed(postsPerPage: number = 12): UseDinosaurData
   // Clear old cache entries
   const clearOldCache = useCallback(() => {
     const now = Date.now();
-    for (const [key, value] of pageCache.entries()) {
+    pageCache.forEach((value, key) => {
       if (now - value.timestamp > CACHE_DURATION) {
         pageCache.delete(key);
       }
-    }
+    });
   }, []);
 
   const fetchData = useCallback(async (pageNum: number, isPrefetch: boolean = false) => {
