@@ -2,38 +2,21 @@
 
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import DinosaurSearch from '@/components/DinosaurSearch'
-import DinosaurSearchFixed from '@/components/DinosaurSearchFixed'
-import DinosaurSearchUnified from '@/components/DinosaurSearchUnified'
 import DinosaurSearchClean from '@/components/DinosaurSearchClean'
-import DinosaurPost from '@/components/blog/DinosaurPost'
 import DinosaurPostImproved from '@/components/blog/DinosaurPostImproved'
 import BlogPostModal from '@/components/blog/BlogPostModal'
-import Pagination from '@/components/blog/Pagination'
-import PaginationImproved from '@/components/blog/PaginationImproved'
 import PaginationNoScroll from '@/components/blog/PaginationNoScroll'
 import BlogHeader from '@/components/layout/BlogHeader'
 import BlogFooter from '@/components/layout/BlogFooter'
-import { useDinosaurData } from '@/hooks/useDinosaurData'
-import { useDinosaurDataImproved } from '@/hooks/useDinosaurDataImproved'
-import { useDinosaurDataFixed } from '@/hooks/useDinosaurDataFixed'
 import { useDinosaurDataNoScroll } from '@/hooks/useDinosaurDataNoScroll'
 import { Dinosaur } from '@/data/dinosaurs'
 import type { Dinosaur as DinosaurType } from '@/data/dinosaurs'
 
 export default function DinosaurBlogHomePage() {
   const [selectedDinosaur, setSelectedDinosaur] = useState<Dinosaur | null>(null)
-  const [useImprovedComponents, setUseImprovedComponents] = useState(true) // Toggle for A/B testing
-  const [useFixedPagination, setUseFixedPagination] = useState(true) // Use fixed pagination by default
-  const [useNoScrollPagination, setUseNoScrollPagination] = useState(true) // Use no-scroll pagination by default
   const { t } = useTranslation()
   
-  // Call all hooks unconditionally
-  const dinosaurDataNoScroll = useDinosaurDataNoScroll(12);
-  const dinosaurDataFixed = useDinosaurDataFixed(12);
-  const dinosaurDataImproved = useDinosaurDataImproved(12);
-  
-  // Select which hook data to use based on settings
+  // Use the most stable version (NoScroll)
   const {
     dinosaurs,
     isLoading,
@@ -52,7 +35,7 @@ export default function DinosaurBlogHomePage() {
     setTemporalRange,
     setPage,
     prefetchPage
-  } = useNoScrollPagination ? dinosaurDataNoScroll : (useFixedPagination ? dinosaurDataFixed : dinosaurDataImproved)
+  } = useDinosaurDataNoScroll(12)
 
   // For search input local state
   const [searchInput, setSearchInput] = useState(search);
@@ -129,20 +112,12 @@ export default function DinosaurBlogHomePage() {
                 setSearch(query);
                 setDiet(filters?.diet || '');
                 setLocomotionType(filters?.locomotionType || '');
-                // Don't reset page here if using fixed pagination - the hook will handle it
-                if (!useFixedPagination) {
-                  setPage(1);
-                }
               }}
               onSearchStateChange={(searching) => {
                 if (!searching) {
                   setSearch('');
                   setDiet('');
                   setLocomotionType('');
-                  // Don't reset page here if using fixed pagination
-                  if (!useFixedPagination) {
-                    setPage(1);
-                  }
                 }
               }}
               isLoading={isLoading || isPaginating}
@@ -169,55 +144,6 @@ export default function DinosaurBlogHomePage() {
                   📊 {t('bestiary.databaseSummary', { count: totalCount, perPage: 12 })}
                 </div>
               )}
-            </div>
-            {/* Component toggles for demo */}
-            <div className="hidden lg:flex flex-col gap-2">
-              <div className="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
-                <span className="text-xs font-medium text-gray-600 px-2">UI:</span>
-                <button
-                  onClick={() => setUseImprovedComponents(false)}
-                  className={`px-3 py-1.5 rounded text-sm font-medium transition-all ${
-                    !useImprovedComponents
-                      ? 'bg-white text-gray-900 shadow-sm'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  Original
-                </button>
-                <button
-                  onClick={() => setUseImprovedComponents(true)}
-                  className={`px-3 py-1.5 rounded text-sm font-medium transition-all ${
-                    useImprovedComponents
-                      ? 'bg-white text-gray-900 shadow-sm'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  Improved ✨
-                </button>
-              </div>
-              <div className="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
-                <span className="text-xs font-medium text-gray-600 px-2">Pagination:</span>
-                <button
-                  onClick={() => setUseFixedPagination(false)}
-                  className={`px-3 py-1.5 rounded text-sm font-medium transition-all ${
-                    !useFixedPagination
-                      ? 'bg-white text-gray-900 shadow-sm'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  Buggy
-                </button>
-                <button
-                  onClick={() => setUseFixedPagination(true)}
-                  className={`px-3 py-1.5 rounded text-sm font-medium transition-all ${
-                    useFixedPagination
-                      ? 'bg-white text-gray-900 shadow-sm'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  Fixed ✅
-                </button>
-              </div>
             </div>
           </div>
         </div>
@@ -276,40 +202,23 @@ export default function DinosaurBlogHomePage() {
         ) : !error && !isLoading && (
           <>
             <div className={`grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 lg:gap-8 mb-6 sm:mb-10 transition-opacity duration-300 ${isPaginating ? 'opacity-50' : 'opacity-100'}`}>
-              {listToDisplay.map((dinosaur, index) => {
-                const Component = useImprovedComponents ? DinosaurPostImproved : DinosaurPost;
-                return (
-                  <Component
-                    key={`${dinosaur.id || index}-${dinosaur.name}-${index}`}
-                    dinosaur={dinosaur}
-                    onClick={() => setSelectedDinosaur(dinosaur)}
-                  />
-                );
-              })}
+              {listToDisplay.map((dinosaur, index) => (
+                <DinosaurPostImproved
+                  key={`${dinosaur.id || index}-${dinosaur.name}-${index}`}
+                  dinosaur={dinosaur}
+                  onClick={() => setSelectedDinosaur(dinosaur)}
+                />
+              ))}
             </div>
 
             {/* Pagination */}
-            {totalPages > 1 && useNoScrollPagination ? (
+            {totalPages > 1 && (
               <PaginationNoScroll
                 currentPage={page}
                 totalPages={totalPages}
                 onPageChange={setPage}
                 onPrefetch={prefetchPage}
                 isPaginating={isPaginating}
-              />
-            ) : totalPages > 1 && useImprovedComponents ? (
-              <PaginationImproved
-                currentPage={page}
-                totalPages={totalPages}
-                onPageChange={setPage}
-                onPrefetch={prefetchPage}
-                isPaginating={isPaginating}
-              />
-            ) : totalPages > 1 && (
-              <Pagination
-                currentPage={page}
-                totalPages={totalPages}
-                onPageChange={setPage}
               />
             )}
           </>
